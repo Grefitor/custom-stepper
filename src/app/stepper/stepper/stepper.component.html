@@ -1,0 +1,31 @@
+<section class="container" *ngIf="!hidden">
+    <header class="header">
+        <ol>
+            <ng-container *ngFor="let step of steps; let i = index;">
+                <li [ngClass]="(selectedIndex === i) ? activeClass : ''" class="{{styleClass}}">
+                    <a (click)="stepSelected(i)">
+                        <ng-container *ngIf="step.stepLabel; else showLabelText"
+                            [ngTemplateOutlet]="step.stepLabel.template">
+                        </ng-container>
+                        <ng-template #showLabelText>
+                            {{ step.label }}
+                        </ng-template>
+                    </a>
+                </li>
+            </ng-container>
+        </ol>
+    </header>
+
+    <div class="body columns">
+        <div class="column is-one-third">
+            <ng-content select="p"></ng-content>
+        </div>
+        <ol class="column is-two-third">
+            <ng-container *ngFor="let step of steps; let i = index;">
+                <li appStep [index]="i" (stepSelected)="stepSelected($event)">
+                    <ng-container [ngTemplateOutlet]="step.content"></ng-container>
+                </li>
+            </ng-container>
+        </ol>
+    </div>
+</section>
